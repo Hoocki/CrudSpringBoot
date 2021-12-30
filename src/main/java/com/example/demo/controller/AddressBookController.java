@@ -12,11 +12,26 @@ import java.util.Map;
 @RequestMapping("/addressBook")
 public class AddressBookController {
 
-
     private final Map<Integer, User> addressBook = new HashMap<>(Map.of(
             89203983, new User("Pol", 25),
             89201234, new User("Lor", 32)
     ));
+    private static String WRONG_KEY = "Неверный ключ";
+    private static String CORRECT_KEY = "Найден ключ";
+    private static String INSERT = "Успешное добавление";
+    private static String WRONG_INSERT = "Этот ключ уже есть в addressBook";
+    private static String UPDATE = "Обновлено";
+    private static String DELETE = "Удалено";
+    private static boolean TRUE = true;
+    private static boolean FALSE = false;
+
+
+    private static boolean containsKey(Map addressBook, @PathVariable int id) {
+        if (addressBook.containsKey(id) == false) {
+            return FALSE;
+        }
+        return TRUE;
+    }
 
     @GetMapping
     public Map<Integer, User> getUsers() {
@@ -25,37 +40,37 @@ public class AddressBookController {
 
     @GetMapping("{id}")
     public User getUser(@PathVariable int id) {
-        if (addressBook.containsKey(id) == false) {
-            System.out.println("Неверный ключ");
+        if (containsKey(addressBook, id) == FALSE) {
+            System.out.println(WRONG_KEY);
         }
         return addressBook.get(id);
     }
 
     @PostMapping("{id}")
     public String addUser(@PathVariable int id, @RequestBody User user) {
-        if (addressBook.containsKey(id) == true) {
-            return "Этот ключ уже есть в addressBook";
+        if (containsKey(addressBook, id) == TRUE) {
+            return WRONG_INSERT;
         }
         addressBook.put(id, user);
-        return "Успешное добавление";
+        return INSERT;
     }
 
     @PutMapping("{id}")
     public String updateUser(@PathVariable int id, @RequestBody User user) {
-        if (addressBook.containsKey(id) == false) {
-            return "Неверный ключ";
+        if (containsKey(addressBook, id) == FALSE) {
+            return WRONG_KEY;
         }
         addressBook.replace(id, user);
-        return "Обновлено";
+        return UPDATE;
     }
 
     @DeleteMapping("{id}")
-    public String deleteUser(@PathVariable int id){
-        if (addressBook.containsKey(id) == false) {
-            return "Неверный ключ";
+    public String deleteUser(@PathVariable int id) {
+        if (containsKey(addressBook, id) == FALSE) {
+            return WRONG_KEY;
         }
         addressBook.remove(id);
-        return "Удалено";
+        return DELETE;
     }
 
 }
