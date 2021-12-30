@@ -25,7 +25,8 @@ public class AddressBookController {
     
     private final static String UPDATE = "Обновлено";
     
-    private final static String DELETE = "Удалено";  
+    private final static String DELETE = "Удалено";
+
     
 
     private boolean containsUser(int id) {
