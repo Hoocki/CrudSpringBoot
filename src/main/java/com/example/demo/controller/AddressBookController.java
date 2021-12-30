@@ -16,21 +16,20 @@ public class AddressBookController {
             89203983, new User("Pol", 25),
             89201234, new User("Lor", 32)
     ));
-    private static String WRONG_KEY = "Неверный ключ";
-    private static String CORRECT_KEY = "Найден ключ";
-    private static String INSERT = "Успешное добавление";
-    private static String WRONG_INSERT = "Этот ключ уже есть в addressBook";
-    private static String UPDATE = "Обновлено";
-    private static String DELETE = "Удалено";
-    private static boolean TRUE = true;
-    private static boolean FALSE = false;
+    
+    private final static String WRONG_PHONE_NUMBER = "Неверный телефон";
+    
+    private final static String USER_INSERT = "Успешное добавление";
+    
+    private final static String USER_NOT_INSERT = "Этот телефон уже есть в addressBook";
+    
+    private final static String UPDATE = "Обновлено";
+    
+    private final static String DELETE = "Удалено";  
+    
 
-
-    private static boolean containsKey(Map addressBook, @PathVariable int id) {
-        if (addressBook.containsKey(id) == false) {
-            return FALSE;
-        }
-        return TRUE;
+    private boolean containsUser(int id) {
+        return addressBook.containsKey(id);
     }
 
     @GetMapping
@@ -40,25 +39,25 @@ public class AddressBookController {
 
     @GetMapping("{id}")
     public User getUser(@PathVariable int id) {
-        if (containsKey(addressBook, id) == FALSE) {
-            System.out.println(WRONG_KEY);
+        if (!containsUser(id)) {
+            System.out.println(WRONG_PHONE_NUMBER);
         }
         return addressBook.get(id);
     }
 
     @PostMapping("{id}")
     public String addUser(@PathVariable int id, @RequestBody User user) {
-        if (containsKey(addressBook, id) == TRUE) {
-            return WRONG_INSERT;
+        if (containsUser(id)) {
+            return USER_NOT_INSERT;
         }
         addressBook.put(id, user);
-        return INSERT;
+        return USER_INSERT;
     }
 
     @PutMapping("{id}")
     public String updateUser(@PathVariable int id, @RequestBody User user) {
-        if (containsKey(addressBook, id) == FALSE) {
-            return WRONG_KEY;
+        if (!containsUser(id)) {
+            return WRONG_PHONE_NUMBER;
         }
         addressBook.replace(id, user);
         return UPDATE;
@@ -66,8 +65,8 @@ public class AddressBookController {
 
     @DeleteMapping("{id}")
     public String deleteUser(@PathVariable int id) {
-        if (containsKey(addressBook, id) == FALSE) {
-            return WRONG_KEY;
+        if (!containsUser(id)) {
+            return WRONG_PHONE_NUMBER;
         }
         addressBook.remove(id);
         return DELETE;
