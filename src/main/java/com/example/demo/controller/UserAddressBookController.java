@@ -28,14 +28,16 @@ public class UserAddressBookController {
 
     private final static String USER_ADDRESS_BOOK_DELETED = "UserAddressBook delete successfully";
 
+    private final static String USER_ADDRESS_BOOK_WITHOUT_NUMBER = "User wasn't found with this phoneNumber";
+
     private UserAddressBook getUserByPhoneNumber(int phoneNumber) {
         for (UserAddressBook userAddressBook : usersAddressBooks) {
             if (userAddressBook.getPhoneNumber() == phoneNumber) {
                 return userAddressBook;
             }
         }
-        System.out.println("User wasn't found with this phoneNumber");
-        throw new NoSuchElementException("User wasn't found with this phoneNumber");
+        System.out.println(USER_ADDRESS_BOOK_WITHOUT_NUMBER);
+        throw new NoSuchElementException(USER_ADDRESS_BOOK_WITHOUT_NUMBER);
     }
 
     @GetMapping
@@ -66,26 +68,17 @@ public class UserAddressBookController {
 
     @PutMapping
     public String updateUserAddressBook(@RequestBody UserAddressBook userAddressBook) {
-        try {
-            UserAddressBook userAddressBookId = getUserByPhoneNumber(userAddressBook.getPhoneNumber());
-            usersAddressBooks.set(usersAddressBooks.indexOf(userAddressBookId), userAddressBook);
-            return USER_ADDRESS_BOOK_UPDATED;
-        } catch (NoSuchElementException e) {
-            return USER_ADDRESS_BOOK_WRONG_NUMBER;
-        }
 
+        UserAddressBook userAddressBookId = getUserByPhoneNumber(userAddressBook.getPhoneNumber());
+        usersAddressBooks.set(usersAddressBooks.indexOf(userAddressBookId), userAddressBook);
+        return USER_ADDRESS_BOOK_UPDATED;
     }
 
     @DeleteMapping("{phoneNumber}")
     public String deleteUserAddressBook(@PathVariable int phoneNumber) {
-        try {
-            UserAddressBook userAddressBookId = getUserByPhoneNumber(phoneNumber);
-            usersAddressBooks.remove(usersAddressBooks.indexOf(userAddressBookId));
-            return USER_ADDRESS_BOOK_DELETED;
-        } catch (NoSuchElementException e) {
-            return USER_ADDRESS_BOOK_WRONG_NUMBER;
-        }
-
+        UserAddressBook userAddressBookId = getUserByPhoneNumber(phoneNumber);
+        usersAddressBooks.remove(usersAddressBooks.indexOf(userAddressBookId));
+        return USER_ADDRESS_BOOK_DELETED;
     }
 
 }

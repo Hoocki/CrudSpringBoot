@@ -20,18 +20,18 @@ public class AddressBookController {
     
     private final static String WRONG_PHONE_NUMBER = "Неверный телефон";
     
-    private final static String USER_INSERT = "Успешное добавление";
+    private final static String USER_INSERTED = "Успешное добавление";
     
-    private final static String USER_NOT_INSERT = "Этот телефон уже есть в addressBook";
+    private final static String USER_NOT_INSERTED = "Этот телефон уже есть в addressBook";
     
-    private final static String UPDATE = "Обновлено";
+    private final static String UPDATED = "Обновлено";
     
-    private final static String DELETE = "Удалено";
+    private final static String DELETED = "Удалено";
 
     
 
-    private boolean containsUser(int id) {
-        return addressBook.containsKey(id);
+    private boolean containsUser(int phoneNumber) {
+        return addressBook.containsKey(phoneNumber);
     }
 
     @GetMapping
@@ -39,48 +39,40 @@ public class AddressBookController {
         return addressBook;
     }
 
-    @GetMapping("{id}")
-    public UserAddressBook getUserAddressBook(@PathVariable int id) {
-        if (!containsUser(id)) {
-            System.out.println(WRONG_PHONE_NUMBER);
+    @GetMapping("{phoneNumber}")
+    public UserAddressBook getUserAddressBook(@PathVariable int phoneNumber) {
+        if (!containsUser(phoneNumber)) {
+            throw new IllegalArgumentException(WRONG_PHONE_NUMBER);
         }
-        User user = addressBook.get(id);
-        UserAddressBook userAddressBook = new UserAddressBook("default",0,0);
-        for(Map.Entry<Integer, User> entry : addressBook.entrySet()){
-            if(entry.getValue().equals(user)){
-               userAddressBook.setAge(user.getAge());
-               userAddressBook.setName(user.getName());
-               userAddressBook.setPhoneNumber(entry.getKey());
-            }
-        }
-        return userAddressBook;
+        User user = addressBook.get(phoneNumber);
+        return new UserAddressBook(user.getName(), user.getAge(), phoneNumber);
     }
 
-    @PostMapping("{id}")
-    public String addUser(@PathVariable int id, @RequestBody User user) {
-        if (containsUser(id)) {
-            return USER_NOT_INSERT;
+    @PostMapping("{phoneNumber}")
+    public String addUser(@PathVariable int phoneNumber, @RequestBody User user) {
+        if (containsUser(phoneNumber)) {
+            return USER_NOT_INSERTED;
         }
-        addressBook.put(id, user);
-        return USER_INSERT;
+        addressBook.put(phoneNumber, user);
+        return USER_INSERTED;
     }
 
-    @PutMapping("{id}")
-    public String updateUser(@PathVariable int id, @RequestBody User user) {
-        if (!containsUser(id)) {
+    @PutMapping("{phoneNumber}")
+    public String updateUser(@PathVariable int phoneNumber, @RequestBody User user) {
+        if (!containsUser(phoneNumber)) {
             return WRONG_PHONE_NUMBER;
         }
-        addressBook.replace(id, user);
-        return UPDATE;
+        addressBook.replace(phoneNumber, user);
+        return UPDATED;
     }
 
-    @DeleteMapping("{id}")
-    public String deleteUser(@PathVariable int id) {
-        if (!containsUser(id)) {
+    @DeleteMapping("{phoneNumber}")
+    public String deleteUser(@PathVariable int phoneNumber) {
+        if (!containsUser(phoneNumber)) {
             return WRONG_PHONE_NUMBER;
         }
-        addressBook.remove(id);
-        return DELETE;
+        addressBook.remove(phoneNumber);
+        return DELETED;
     }
 
 }
