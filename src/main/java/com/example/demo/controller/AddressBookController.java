@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.example.demo.model.User;
+import com.example.demo.model.UserAddressBook;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -39,11 +40,20 @@ public class AddressBookController {
     }
 
     @GetMapping("{id}")
-    public User getUser(@PathVariable int id) {
+    public UserAddressBook getUserAddressBook(@PathVariable int id) {
         if (!containsUser(id)) {
             System.out.println(WRONG_PHONE_NUMBER);
         }
-        return addressBook.get(id);
+        User user = addressBook.get(id);
+        UserAddressBook userAddressBook = new UserAddressBook("default",0,0);
+        for(Map.Entry<Integer, User> entry : addressBook.entrySet()){
+            if(entry.getValue().equals(user)){
+               userAddressBook.setAge(user.getAge());
+               userAddressBook.setName(user.getName());
+               userAddressBook.setPhoneNumber(entry.getKey());
+            }
+        }
+        return userAddressBook;
     }
 
     @PostMapping("{id}")

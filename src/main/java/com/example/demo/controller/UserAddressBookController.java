@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.model.User;
 import com.example.demo.model.UserAddressBook;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,20 +20,21 @@ public class UserAddressBookController {
             new UserAddressBook("Lor", 18, 42)
     ));
 
-    private final static String USER_ADDRESS_BOOK_INSERT = "UserAddressBook insert successfully";
+    private final static String USER_ADDRESS_BOOK_INSERTED = "UserAddressBook insert successfully";
 
     private final static String USER_ADDRESS_BOOK_WRONG_NUMBER = "UserAddressBook has wrong phoneNumber";
 
-    private final static String USER_ADDRESS_BOOK_UPDATE = "UserAddressBook update successfully";
+    private final static String USER_ADDRESS_BOOK_UPDATED = "UserAddressBook update successfully";
 
-    private final static String USER_ADDRESS_BOOK_DELETE = "UserAddressBook delete successfully";
+    private final static String USER_ADDRESS_BOOK_DELETED = "UserAddressBook delete successfully";
 
-    private UserAddressBook containsPhoneNumber(int phoneNumber) {
+    private UserAddressBook getUserByPhoneNumber(int phoneNumber) {
         for (UserAddressBook userAddressBook : usersAddressBooks) {
             if (userAddressBook.getPhoneNumber() == phoneNumber) {
                 return userAddressBook;
             }
         }
+        System.out.println("User wasn't found with this phoneNumber");
         throw new NoSuchElementException("User wasn't found with this phoneNumber");
     }
 
@@ -42,23 +44,22 @@ public class UserAddressBookController {
     }
 
     @GetMapping("{phoneNumber}")
-    public UserAddressBook getUserAddressBook(@PathVariable int phoneNumber) {
-        try {
-            return containsPhoneNumber(phoneNumber);
-        } catch (NoSuchElementException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+    public User getUserAddressBook(@PathVariable int phoneNumber) {
+        UserAddressBook userAddressBook = getUserByPhoneNumber(phoneNumber);
+        return new User(
+                userAddressBook.getName(),
+                userAddressBook.getAge()
+        );
     }
 
     @PostMapping
     public String addUserAddressBook(@RequestBody UserAddressBook userAddressBook) {
         try {
-            containsPhoneNumber(userAddressBook.getPhoneNumber());
+            getUserByPhoneNumber(userAddressBook.getPhoneNumber());
             return USER_ADDRESS_BOOK_WRONG_NUMBER;
         } catch (NoSuchElementException e) {
             usersAddressBooks.add(userAddressBook);
-            return USER_ADDRESS_BOOK_INSERT;
+            return USER_ADDRESS_BOOK_INSERTED;
         }
 
     }
@@ -66,9 +67,9 @@ public class UserAddressBookController {
     @PutMapping
     public String updateUserAddressBook(@RequestBody UserAddressBook userAddressBook) {
         try {
-            UserAddressBook userAddressBookId = containsPhoneNumber(userAddressBook.getPhoneNumber());
+            UserAddressBook userAddressBookId = getUserByPhoneNumber(userAddressBook.getPhoneNumber());
             usersAddressBooks.set(usersAddressBooks.indexOf(userAddressBookId), userAddressBook);
-            return USER_ADDRESS_BOOK_UPDATE;
+            return USER_ADDRESS_BOOK_UPDATED;
         } catch (NoSuchElementException e) {
             return USER_ADDRESS_BOOK_WRONG_NUMBER;
         }
@@ -76,11 +77,11 @@ public class UserAddressBookController {
     }
 
     @DeleteMapping("{phoneNumber}")
-    public String updateUserAddressBook(@PathVariable int phoneNumber) {
+    public String deleteUserAddressBook(@PathVariable int phoneNumber) {
         try {
-            UserAddressBook userAddressBookId = containsPhoneNumber(phoneNumber);
+            UserAddressBook userAddressBookId = getUserByPhoneNumber(phoneNumber);
             usersAddressBooks.remove(usersAddressBooks.indexOf(userAddressBookId));
-            return USER_ADDRESS_BOOK_DELETE;
+            return USER_ADDRESS_BOOK_DELETED;
         } catch (NoSuchElementException e) {
             return USER_ADDRESS_BOOK_WRONG_NUMBER;
         }
