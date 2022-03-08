@@ -1,4 +1,4 @@
-package com.example.demo.service.exception;
+package com.example.demo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,19 +13,20 @@ import java.util.NoSuchElementException;
 public class RestExceptionHandler extends Exception {
 
     @ExceptionHandler({IllegalArgumentException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError IllegalArgumentMessage(IllegalArgumentException exception){
-        Date date = new Date();
-        ApiError error = new ApiError(exception.getMessage(), date.toString());
-        return error;
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError illegalArgumentMessage(IllegalArgumentException exception){
+        return createApiError(exception);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError NoSuchElementMessage(NoSuchElementException exception){
+    public ApiError noSuchElementMessage(NoSuchElementException exception){
+        return createApiError(exception);
+    }
+
+    private ApiError createApiError(Exception exception){
         Date date = new Date();
-        ApiError error = new ApiError(exception.getMessage(), date.toString());
-        return error;
+        return new ApiError(exception.getMessage(), date.toString());
     }
 
 }

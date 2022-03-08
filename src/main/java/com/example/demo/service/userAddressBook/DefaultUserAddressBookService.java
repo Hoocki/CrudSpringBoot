@@ -1,4 +1,4 @@
-package com.example.demo.service.UserAddressBook;
+package com.example.demo.service.userAddressBook;
 
 
 import com.example.demo.model.User;
@@ -65,7 +65,6 @@ public class DefaultUserAddressBookService implements UserAddressBookService{
     }
 
     public void updateUserAddressBook(UserAddressBook userAddressBook) {
-
         UserAddressBook userAddressBookId = getUserByPhoneNumber(userAddressBook.getPhoneNumber());
         usersAddressBooks.set(usersAddressBooks.indexOf(userAddressBookId), userAddressBook);
         log.info(USER_ADDRESS_BOOK_UPDATED);
@@ -76,5 +75,6 @@ public class DefaultUserAddressBookService implements UserAddressBookService{
         usersAddressBooks.remove(usersAddressBooks.indexOf(userAddressBookId));
         log.info(USER_ADDRESS_BOOK_DELETED);
     }
+
 
 }
