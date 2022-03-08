@@ -3,8 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.model.UserAddressBook;
-import com.example.demo.service.UserAddressBook.UserAddressBookService;
-import lombok.AllArgsConstructor;
+import com.example.demo.service.userAddressBook.UserAddressBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

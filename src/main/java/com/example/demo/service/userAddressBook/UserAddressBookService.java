@@ -1,4 +1,4 @@
-package com.example.demo.service.UserAddressBook;
+package com.example.demo.service.userAddressBook;
 
 import com.example.demo.model.User;
 import com.example.demo.model.UserAddressBook;

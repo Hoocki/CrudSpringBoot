@@ -1,14 +1,13 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.model.User;
 import com.example.demo.service.user.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
