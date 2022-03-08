@@ -1,52 +1,42 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.model.User;
+import com.example.demo.service.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-
-    private final List<User> users = new ArrayList<>(Arrays.asList(
-            new User("Jim", 19),
-            new User("Mike", 23),
-            new User("Lor", 18)
-    ));
-
+    private final UserService userService;
 
     @GetMapping
     public List<User> getUsers() {
-        return users;
+        return userService.getUsers();
     }
 
     @GetMapping("{id}")
     public User getUser(@PathVariable int id) {
-        return users.get(id);
+        return userService.getUser(id);
     }
 
     @PostMapping
     public void addUser(@RequestBody User user) {
-        users.add(user);
+        userService.addUser(user);
     }
 
     @PutMapping("{id}")
     public void updateUser(@RequestBody User user, @PathVariable int id) {
-        users.set(id, user);
+        userService.updateUser(user, id);
     }
 
     @DeleteMapping("{id}")
-    public String deleteUser(@PathVariable int id) {
-        if (id >= users.size() || id < 0) {
-            return "Неверно введённый id";
-        }
-        users.remove(id);
-        return "Успешное удаление";
+    public void deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
     }
 
 }

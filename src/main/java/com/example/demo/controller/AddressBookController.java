@@ -3,76 +3,44 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.model.UserAddressBook;
+import com.example.demo.service.addressBook.AddressBookService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.HashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/addressBook")
 public class AddressBookController {
 
-    private final Map<Integer, User> addressBook = new HashMap<>(Map.of(
-            89203983, new User("Pol", 25),
-            89201234, new User("Lor", 32)
-    ));
-    
-    private final static String WRONG_PHONE_NUMBER = "Неверный телефон";
-    
-    private final static String USER_INSERTED = "Успешное добавление";
-    
-    private final static String USER_NOT_INSERTED = "Этот телефон уже есть в addressBook";
-    
-    private final static String UPDATED = "Обновлено";
-    
-    private final static String DELETED = "Удалено";
+    private final AddressBookService addressBookService;
 
-    
-
-    private boolean containsUser(int phoneNumber) {
-        return addressBook.containsKey(phoneNumber);
-    }
+    private static final String PHONE_NUMBER = "{phoneNumber}";
 
     @GetMapping
     public Map<Integer, User> getUsers() {
-        return addressBook;
+        return addressBookService.getUsers();
     }
 
-    @GetMapping("{phoneNumber}")
+    @GetMapping(PHONE_NUMBER)
     public UserAddressBook getUserAddressBook(@PathVariable int phoneNumber) {
-        if (!containsUser(phoneNumber)) {
-            throw new IllegalArgumentException(WRONG_PHONE_NUMBER);
-        }
-        User user = addressBook.get(phoneNumber);
-        return new UserAddressBook(user.getName(), user.getAge(), phoneNumber);
+        return addressBookService.getUserAddressBook(phoneNumber);
     }
 
-    @PostMapping("{phoneNumber}")
-    public String addUser(@PathVariable int phoneNumber, @RequestBody User user) {
-        if (containsUser(phoneNumber)) {
-            return USER_NOT_INSERTED;
-        }
-        addressBook.put(phoneNumber, user);
-        return USER_INSERTED;
+    @PostMapping(PHONE_NUMBER)
+    public void addUser(@PathVariable int phoneNumber, @RequestBody User user) {
+        addressBookService.addUser(phoneNumber, user);
     }
 
-    @PutMapping("{phoneNumber}")
-    public String updateUser(@PathVariable int phoneNumber, @RequestBody User user) {
-        if (!containsUser(phoneNumber)) {
-            return WRONG_PHONE_NUMBER;
-        }
-        addressBook.replace(phoneNumber, user);
-        return UPDATED;
+    @PutMapping(PHONE_NUMBER)
+    public void updateUser(@PathVariable int phoneNumber, @RequestBody User user) {
+        addressBookService.updateUser(phoneNumber, user);
     }
 
-    @DeleteMapping("{phoneNumber}")
-    public String deleteUser(@PathVariable int phoneNumber) {
-        if (!containsUser(phoneNumber)) {
-            return WRONG_PHONE_NUMBER;
-        }
-        addressBook.remove(phoneNumber);
-        return DELETED;
+    @DeleteMapping(PHONE_NUMBER)
+    public void deleteUser(@PathVariable int phoneNumber) {
+        addressBookService.deleteUser(phoneNumber);
     }
 
 }
