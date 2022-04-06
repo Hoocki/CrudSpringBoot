@@ -1,6 +1,7 @@
 package com.example.demo.service.user;
 
 import com.example.demo.model.User;
+import com.example.demo.property.UserProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,13 @@ import java.util.List;
 @Service
 public class DefaultUserService implements UserService{
 
-    private final List<User> users = new ArrayList<>(Arrays.asList(
-            new User("Jim", 19),
-            new User("Mike", 23),
-            new User("Lor", 18)
-    ));
+    private final List<User> users;
+
+    public DefaultUserService(UserProperty userProperty){
+        users = new ArrayList<>(List.of(
+                new User(userProperty.getName(), userProperty.getAge())
+        ));
+    }
 
     private static final String WRONG_DELETED = "User didn't delete";
 
