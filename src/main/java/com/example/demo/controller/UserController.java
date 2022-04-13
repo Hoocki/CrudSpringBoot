@@ -16,12 +16,9 @@ public class UserController {
 
     @GetMapping
     public List<User> getUsers(@RequestParam String grade) {
-        if (grade.equals("ASC"))
-        {
+        if (grade.equals("ASC")) {
             Collections.sort(userService.getUsers());
-        }
-        else if(grade.equals("DEC"))
-        {
+        } else if (grade.equals("DEC")) {
             userService.getUsers().sort(Collections.reverseOrder());
         }
         return userService.getUsers();
