@@ -14,14 +14,15 @@ public class UserController {
 
     private final UserService userService;
 
+    private final static String SORTING_ASC = "ASC";
+
+    private final static String SORTING_DESC = "DESC";
+
     @GetMapping
-    public List<User> getUsers(@RequestParam String grade) {
-        if (grade.equals("ASC"))
-        {
+    public List<User> getUsers(@RequestParam String sort) {
+        if (sort.equals(SORTING_ASC)) {
             Collections.sort(userService.getUsers());
-        }
-        else if(grade.equals("DEC"))
-        {
+        } else if (sort.equals(SORTING_DESC)) {
             userService.getUsers().sort(Collections.reverseOrder());
         }
         return userService.getUsers();
