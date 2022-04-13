@@ -17,7 +17,9 @@ public class DefaultUserService implements UserService{
 
     public DefaultUserService(UserProperty userProperty){
         users = new ArrayList<>(List.of(
-                new User(userProperty.getName(), userProperty.getAge())
+                new User(userProperty.getName(), userProperty.getAge()),
+                new User("Barbie",22),
+                new User("Zoro",32)
         ));
     }
 
