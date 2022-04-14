@@ -5,7 +5,7 @@ import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -14,8 +14,17 @@ public class UserController {
 
     private final UserService userService;
 
+    private final static String SORTING_ASC = "ASC";
+
+    private final static String SORTING_DESC = "DESC";
+
     @GetMapping
-    public List<User> getUsers() {
+    public List<User> getUsers(@RequestParam String sort) {
+        if (sort.equals(SORTING_ASC)) {
+            Collections.sort(userService.getUsers());
+        } else if (sort.equals(SORTING_DESC)) {
+            userService.getUsers().sort(Collections.reverseOrder());
+        }
         return userService.getUsers();
     }
 

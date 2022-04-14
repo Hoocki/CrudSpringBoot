@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements Comparable<User> {
 
     /**
      * Имя пользователя
@@ -19,4 +19,10 @@ public class User {
      */
     private int age;
 
+
+
+   @Override
+    public int compareTo(User user) {
+        return this.name.compareTo(user.getName());
+    }
 }
