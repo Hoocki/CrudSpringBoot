@@ -4,8 +4,8 @@ import com.example.demo.model.User;
 import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -14,22 +14,13 @@ public class UserController {
 
     private final UserService userService;
 
-    private final static String SORTING_ASC = "ASC";
-
-    private final static String SORTING_DESC = "DESC";
-
     @GetMapping
     public List<User> getUsers(@RequestParam String sort) {
-        if (sort.equals(SORTING_ASC)) {
-            Collections.sort(userService.getUsers());
-        } else if (sort.equals(SORTING_DESC)) {
-            userService.getUsers().sort(Collections.reverseOrder());
-        }
-        return userService.getUsers();
+        return userService.getUsers(sort);
     }
 
     @GetMapping("{id}")
-    public User getUser(@PathVariable int id) {
+    public User getUser(@PathVariable Long id) {
         return userService.getUser(id);
     }
 
@@ -39,12 +30,12 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public void updateUser(@RequestBody User user, @PathVariable int id) {
+    public void updateUser(@RequestBody User user, @PathVariable Long id) {
         userService.updateUser(user, id);
     }
 
     @DeleteMapping("{id}")
-    public void deleteUser(@PathVariable int id) {
+    public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 
