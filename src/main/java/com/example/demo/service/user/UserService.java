@@ -1,18 +1,19 @@
 package com.example.demo.service.user;
 
+import com.example.demo.exception.BadIdException;
 import com.example.demo.model.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> getUsers();
+    List<User> getUsers(String sort);
 
-    User getUser(int id);
+    User getUser(Long id);
 
     void addUser(User user);
 
-    void updateUser(User user, int id);
+    void updateUser(User user, Long id) throws BadIdException;
 
-    void deleteUser(int id);
+    void deleteUser(Long id) throws BadIdException;
 }

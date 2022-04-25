@@ -1,3 +1,13 @@
 person:
     name: Kan
     age: 27
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/database_test
+    username: postgres
+    password:
+
+  jpa:
+    properties:
+      hibernate:
+        default_schema: schema_test
