@@ -13,7 +13,7 @@ public interface UserService {
 
     void addUser(User user);
 
-    void updateUser(User user, Long id) throws BadIdException;
+    void updateUser(User user, Long id);
 
-    void deleteUser(Long id) throws BadIdException;
+    void deleteUser(Long id);
 }

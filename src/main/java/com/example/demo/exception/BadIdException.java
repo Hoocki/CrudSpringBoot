@@ -1,6 +1,6 @@
 package com.example.demo.exception;
 
-public class BadIdException extends Exception{
+public class BadIdException extends RuntimeException{
 
     private final Long id;
 

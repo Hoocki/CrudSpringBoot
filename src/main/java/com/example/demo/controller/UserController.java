@@ -31,12 +31,12 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public void updateUser(@RequestBody User user, @PathVariable Long id) throws BadIdException {
+    public void updateUser(@RequestBody User user, @PathVariable Long id) {
         userService.updateUser(user, id);
     }
 
     @DeleteMapping("{id}")
-    public void deleteUser(@PathVariable Long id) throws BadIdException {
+    public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 

@@ -36,42 +36,33 @@ public class DefaultUserService implements UserService{
 
     public User getUser(Long id) {
         Optional<User> defUser = userRepository.findById(id);
-        try {
-            if (defUser.isPresent()) {
-                return defUser.get();
-            }
-            throw new BadIdException(WRONG_ID, id);
-        } catch (BadIdException e){
-            log.error(e.getMessage());
+        if (defUser.isPresent()) {
+            return defUser.get();
         }
-        return null;
+        throw new BadIdException(WRONG_ID, id);
     }
 
     public void addUser(User user) {
         userRepository.save(user);
     }
 
-    public void updateUser(User user, Long id) throws BadIdException {
+    public void updateUser(User user, Long id)  {
         Optional<User> defUser = userRepository.findById(id);
-        if (defUser.isPresent()) {
-            User update_user = defUser.get();
-            update_user.setAge(user.getAge());
-            update_user.setName(user.getName());
-            userRepository.save(update_user);
-        }
-        else {
+        if (defUser.isEmpty()) {
             throw new BadIdException(WRONG_ID, id);
         }
+        User update_user = defUser.get();
+        update_user.setAge(user.getAge());
+        update_user.setName(user.getName());
+        userRepository.save(update_user);
     }
 
-    public void deleteUser(Long id) throws BadIdException {
+    public void deleteUser(Long id) {
         Optional<User> defUser = userRepository.findById(id);
-        if (defUser.isPresent()) {
-            userRepository.deleteById(id);
-            log.info(DELETED);
-        }
-        else {
+        if (defUser.isEmpty()) {
             throw new BadIdException(WRONG_ID, id);
         }
+        userRepository.deleteById(id);
+        log.info(DELETED);
     }
 }
