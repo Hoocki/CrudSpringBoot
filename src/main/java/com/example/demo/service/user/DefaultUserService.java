@@ -58,8 +58,7 @@ public class DefaultUserService implements UserService{
             update_user.setAge(user.getAge());
             update_user.setName(user.getName());
             userRepository.save(update_user);
-        }
-        else {
+        } else {
             throw new BadIdException(WRONG_ID, id);
         }
     }
@@ -69,8 +68,7 @@ public class DefaultUserService implements UserService{
         if (defUser.isPresent()) {
             userRepository.deleteById(id);
             log.info(DELETED);
-        }
-        else {
+        } else {
             throw new BadIdException(WRONG_ID, id);
         }
     }
