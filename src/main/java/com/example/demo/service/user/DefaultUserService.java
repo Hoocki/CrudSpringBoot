@@ -4,6 +4,7 @@ import com.example.demo.exception.BadIdException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.utils.Constants;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class DefaultUserService implements UserService{
 
     private static final String DELETED = "User deleted";
@@ -19,10 +21,6 @@ public class DefaultUserService implements UserService{
     private static final String WRONG_ID = "wrong id";
 
     private final UserRepository userRepository;
-
-    public DefaultUserService(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
 
     public List<User> getUsers(String sort) {
         List<User> users = userRepository.findAll();
@@ -36,7 +34,7 @@ public class DefaultUserService implements UserService{
 
     public User getUser(Long id) {
         Optional<User> defUser = userRepository.findById(id);
-        if (defUser.isPresent()) {
+        if (defUser.isPresent()){
             return defUser.get();
         }
         throw new BadIdException(WRONG_ID, id);
