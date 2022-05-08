@@ -36,7 +36,7 @@ public class DefaultUserService implements UserService{
 
     public User getUser(Long id) {
         Optional<User> defUser = userRepository.findById(id);
-        if (defUser.isPresent()) {
+        if (defUser.isPresent()){
             return defUser.get();
         }
         throw new BadIdException(WRONG_ID, id);
