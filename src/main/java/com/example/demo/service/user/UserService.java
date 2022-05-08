@@ -1,6 +1,5 @@
 package com.example.demo.service.user;
 
-import com.example.demo.exception.BadIdException;
 import com.example.demo.model.User;
 
 import java.util.List;
