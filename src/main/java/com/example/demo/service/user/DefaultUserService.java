@@ -47,6 +47,7 @@ public class DefaultUserService implements UserService{
     public void updateUser(User user, Long id)  {
         Optional<User> defUser = userRepository.findById(id);
         if (defUser.isEmpty()) {
+
             throw new BadIdException(WRONG_ID, id);
         }
         User update_user = defUser.get();
